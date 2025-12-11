@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000;
 
 // middleware
@@ -34,7 +34,21 @@ async function run() {
         const scholarship = req.body;
         scholarship.createdAt = new Date();
         const result = await scholarshipsCollection.insertOne(scholarship);
-        res.send(result)
+        res.send(result);
+    })
+
+    app.get('/scholarships',async(req,res) => {
+        const query = {}
+        const cursor = scholarshipsCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+    })
+
+    app.delete('/scholarships/:id', async(req,res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await scholarshipsCollection.deleteOne(query);
+      res.send(result)
     })
 
 
