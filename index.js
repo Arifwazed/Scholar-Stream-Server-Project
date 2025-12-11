@@ -44,11 +44,29 @@ async function run() {
         res.send(result);
     })
 
+    app.get('/scholarships/:id', async(req,res)=> {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await scholarshipsCollection.findOne(query);
+      res.send(result)
+    })
+
     app.delete('/scholarships/:id', async(req,res) => {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)};
       const result = await scholarshipsCollection.deleteOne(query);
       res.send(result)
+    })
+
+    app.patch('/scholarships/:id', async(req,res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const query = {_id: new ObjectId(id)};
+      const updatedDoc = {
+        $set: data
+      }
+      const result = await scholarshipsCollection.updateOne(query,updatedDoc)
+      res.send(result);
     })
 
 
