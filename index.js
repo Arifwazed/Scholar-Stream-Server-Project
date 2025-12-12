@@ -3,6 +3,7 @@ const cors = require('cors')
 const app = express()
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
 const port = process.env.PORT || 3000;
 
 // middleware
@@ -68,6 +69,37 @@ async function run() {
       const result = await scholarshipsCollection.updateOne(query,updatedDoc)
       res.send(result);
     })
+
+    /////////// Payment Api /////////
+    app.post('/create-checkout-session', async (req, res) => {
+      const paymentInfo = req.body;
+      const amount = parseInt(paymentInfo.cost) * 100;
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+          {
+            // Provide the exact Price ID (for example, price_1234) of the product you want to sell
+            price_data: {
+              currency: 'USD',
+              unit_amount: amount,
+              product_data: {
+                name: paymentInfo.scholarshipName
+              }
+            },
+            quantity: 1,
+          },
+        ],
+        customer_email: paymentInfo.userEmail,
+        mode: 'payment',
+        metadata: {
+          scholarshipId: paymentInfo.scholarshipId,
+        },
+        success_url: `${process.env.SITE_DOMAIN}/dashboard/payment-success`,
+        cancel_url: `${process.env.SITE_DOMAIN}/dashboard/payment-cancelled`,
+      });
+      console.log(session)
+      res.send({url: session.url})
+      // res.redirect(303, session.url);
+    });
 
 
     // Send a ping to confirm a successful connection
