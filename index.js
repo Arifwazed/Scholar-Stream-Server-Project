@@ -6,9 +6,37 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const stripe = require('stripe')(process.env.STRIPE_SECRET);
 const port = process.env.PORT || 3000;
 
+//from firebase code //
+const admin = require("firebase-admin");
+const serviceAccount = require('./scholar-stream-projects-firebase-adminsdk.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+
 // middleware
 app.use(cors())
 app.use(express.json())
+
+const verifyFBToken =async (req,res,next) => {
+    const token = req.headers.authorization;
+    console.log('headers in the middlewire',token);
+    if(!token){
+        return res.status(401).send({message: 'unauthorized access'})
+    }
+    try{
+        const idToken = token.split(' ')[1];
+        const decoded = await admin.auth().verifyIdToken(idToken);
+        console.log('decoded in the token:',decoded);
+        req.decoded_email = decoded.email;
+        next();
+
+    }
+    catch(error){
+        res.status(401).send({message: 'unauthorized access'})
+    }
+}
 
 // tracking Id for application
 function generateTrackingId() {
@@ -40,6 +68,22 @@ async function run() {
     const applicationsCollection = db.collection('applications');
 
     /////// USERS API ///////
+    app.post('/users',async(req,res) => {
+      const user = req.body;
+      user.role = 'user';
+      user.createdAt = new Date();
+
+      const email = user.email;
+      const userExists = await usersCollection.findOne({email});
+
+      if(userExists){
+        return res.send({message: 'User Already Exist!!'})
+      }
+
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
+    })
+
     /////// scholarships API ///////
     app.post('/scholarships',async(req,res) => {
         const scholarship = req.body;
@@ -48,7 +92,7 @@ async function run() {
         res.send(result);
     })
 
-    app.get('/scholarships',async(req,res) => {
+    app.get('/scholarships',verifyFBToken,async(req,res) => {
         const query = {}
         const cursor = scholarshipsCollection.find(query);
         const result = await cursor.toArray();
