@@ -10,6 +10,15 @@ const port = process.env.PORT || 3000;
 app.use(cors())
 app.use(express.json())
 
+// tracking Id for application
+function generateTrackingId() {
+  const prefix = "SS"; // or your company code
+  const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, ""); // YYYYMMDD
+  const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase(); // random chars
+  
+  return `${prefix}-${datePart}-${randomPart}`;
+}
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.gafegcj.mongodb.net/?appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -28,6 +37,7 @@ async function run() {
     const db = client.db('scholar_stream_db');
     const usersCollection = db.collection('users');
     const scholarshipsCollection = db.collection('scholarships');
+    const applicationsCollection = db.collection('applications');
 
     /////// USERS API ///////
     /////// scholarships API ///////
@@ -70,9 +80,23 @@ async function run() {
       res.send(result);
     })
 
+    /////// APPLICATION API /////////
+    app.post('/applications', async(req,res) => {
+      const application = req.body;
+      application.createdAt = new Date();
+      application.applicationStatus = 'draft';
+      application.paymentStatus = 'unpaid';
+      const trackingId = generateTrackingId();
+      application.trackingId = trackingId;
+      const result = await applicationsCollection.insertOne(application);
+      res.send({insertedId: result.insertedId,trackingId:trackingId})
+    })
+
     /////////// Payment Api /////////
+    // for payment using stripe
     app.post('/create-checkout-session', async (req, res) => {
       const paymentInfo = req.body;
+      console.log("Payment Info:",paymentInfo);
       const amount = parseInt(paymentInfo.cost) * 100;
       const session = await stripe.checkout.sessions.create({
         line_items: [
@@ -92,13 +116,65 @@ async function run() {
         mode: 'payment',
         metadata: {
           scholarshipId: paymentInfo.scholarshipId,
+          scholarshipName: paymentInfo.scholarshipName,
+          universityName : paymentInfo.universityName,
+          trackingId: paymentInfo.trackingId,
+          applicationId: paymentInfo.applicationId,
+          cost: paymentInfo.cost,
         },
-        success_url: `${process.env.SITE_DOMAIN}/dashboard/payment-success`,
+        success_url: `${process.env.SITE_DOMAIN}/dashboard/payment-success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.SITE_DOMAIN}/dashboard/payment-cancelled`,
       });
       console.log(session)
       res.send({url: session.url})
       // res.redirect(303, session.url);
+    });
+
+    // for successful payment
+    app.patch('/payment-success', async (req, res) => {
+      const sessionId = req.query.session_id;
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      
+      console.log("PAYMENT STATUS:", session);
+      // console.log("METADATA:", session.metadata);
+      const transactionId = session.payment_intent;
+      const trackingId = session.metadata.trackingId;
+      const applicationId = session.metadata.applicationId;
+      const scholarshipName = session.metadata.scholarshipName;
+      const universityName = session.metadata.universityName;
+      const cost = session.metadata.cost;
+      
+
+      if (session.payment_status === 'paid') {
+        const scholarship_id = session.metadata.scholarshipId;
+        const user_email = session.customer_email;
+        // const paidAt= new Date();
+
+        const query = {
+          // scholarshipId: scholarship_id,
+          // userEmail: user_email
+           _id: new ObjectId(applicationId) 
+        };
+
+        const update = {
+          $set: {
+            paymentStatus: 'paid',
+            applicationStatus: 'pending',
+            transactionId : transactionId,
+            paidAt: paidAt
+          }
+        };
+
+        const result = await applicationsCollection.updateOne(query, update);
+
+        if (result.matchedCount === 0) {
+          return res.status(404).json({ message: "Application not found" });
+        }
+
+        res.json({success : true,modifyApplication: result,tracking_Id : trackingId,transaction_Id: transactionId,scholarshipName: scholarshipName,universityName: universityName,cost: cost,date: paidAt})
+      }
+
+      return res.status(400).json({ message: "Payment not completed" });
     });
 
 
