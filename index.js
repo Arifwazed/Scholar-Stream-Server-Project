@@ -90,6 +90,17 @@ async function run() {
       res.send(result)
     })
 
+    app.patch('/users/:id',async(req,res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const query = {_id: new ObjectId(id)};
+      const updatedDoc ={
+        $set : data
+      }
+      const result = await usersCollection.updateOne(query,updatedDoc);
+      res.send(result)
+    })
+
     /////// scholarships API ///////
     app.post('/scholarships',async(req,res) => {
         const scholarship = req.body;
