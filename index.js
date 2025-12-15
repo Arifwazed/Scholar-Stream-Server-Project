@@ -70,7 +70,7 @@ async function run() {
     /////// USERS API ///////
     app.post('/users',async(req,res) => {
       const user = req.body;
-      user.role = 'user';
+      user.role = 'Student';
       user.createdAt = new Date();
 
       const email = user.email;
@@ -85,7 +85,8 @@ async function run() {
     })
 
     app.get('/users',async(req,res) => {
-      const query = {};
+      const role = req.query.role;
+      const query = role ? { role } : {};
       const result = await usersCollection.find(query).toArray();
       res.send(result)
     })
