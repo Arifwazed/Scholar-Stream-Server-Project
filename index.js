@@ -84,6 +84,12 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/users',async(req,res) => {
+      const query = {};
+      const result = await usersCollection.find(query).toArray();
+      res.send(result)
+    })
+
     /////// scholarships API ///////
     app.post('/scholarships',async(req,res) => {
         const scholarship = req.body;
