@@ -161,6 +161,23 @@ async function run() {
       res.send({insertedId: result.insertedId,trackingId:trackingId})
     })
 
+    app.get('/applications',async(req,res) => {
+      const query = {};
+      const result = await applicationsCollection.find(query).toArray();
+      res.send(result)
+    })
+
+    app.patch('/applications/:id',async(req,res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const query = {_id: new ObjectId(id)};
+      const updatedDoc = {
+        $set: data
+      }
+      const result = await applicationsCollection.updateOne(query,updatedDoc)
+      res.send(result);
+    })
+
     /////////// Payment Api /////////
     // for payment using stripe
     app.post('/create-checkout-session', async (req, res) => {
