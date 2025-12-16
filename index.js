@@ -178,6 +178,13 @@ async function run() {
       res.send(result);
     })
 
+    app.delete('/applications/:id',async(req,res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await applicationsCollection.deleteOne(query);
+      res.send(result)
+    })
+
     /////////// Payment Api /////////
     // for payment using stripe
     app.post('/create-checkout-session', async (req, res) => {
