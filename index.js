@@ -66,6 +66,7 @@ async function run() {
     const usersCollection = db.collection('users');
     const scholarshipsCollection = db.collection('scholarships');
     const applicationsCollection = db.collection('applications');
+    const reviewsCollection = db.collection('reviews');
 
     /////// USERS API ///////
     app.post('/users',async(req,res) => {
@@ -282,6 +283,14 @@ async function run() {
 
       return res.status(400).json({ message: "Payment not completed" });
     });
+
+    /////////// Reviews Api /////////
+    app.post('/reviews',async(req,res) => {
+        const reviews = req.body;
+        // reviews.createdAt = new Date();
+        const result = await reviewsCollection.insertOne(reviews);
+        res.send(result);
+    })
 
 
     // Send a ping to confirm a successful connection
