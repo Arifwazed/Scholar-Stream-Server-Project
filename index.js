@@ -292,6 +292,35 @@ async function run() {
         res.send(result);
     })
 
+    app.get('/reviews',async(req,res) => {
+      const query = {};
+      const {email} = req.query;
+      if(email){
+        query.userEmail = email;
+      }
+      const result = await reviewsCollection.find(query).toArray();
+      res.send(result)
+    })
+
+    app.patch('/reviews/:id',async(req,res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const query = {_id: new ObjectId(id)};
+      const updatedDoc = {
+        $set: data
+      }
+      const result = await reviewsCollection.updateOne(query,updatedDoc)
+      res.send(result);
+    })
+
+    app.delete('/reviews/:id',async(req,res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await reviewsCollection.deleteOne(query);
+      res.send(result)
+    })
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
