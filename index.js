@@ -163,6 +163,10 @@ async function run() {
 
     app.get('/applications',async(req,res) => {
       const query = {};
+      const {email} = req.query;
+      if(email){
+        query.userEmail = email;
+      }
       const result = await applicationsCollection.find(query).toArray();
       res.send(result)
     })
@@ -237,34 +241,43 @@ async function run() {
       const universityName = session.metadata.universityName;
       const cost = session.metadata.cost;
       
+      const query = {
+        // scholarshipId: scholarship_id,
+        // userEmail: user_email
+         _id: new ObjectId(applicationId) 
+      };
+      const existingApp = await applicationsCollection.findOne(query);
+      if (!existingApp) {
+        return res.status(404).json({ message: "Application not found" });
+      }
 
       if (session.payment_status === 'paid') {
         const scholarship_id = session.metadata.scholarshipId;
         const user_email = session.customer_email;
         // const paidAt= new Date();
+        // const existingApp = await applicationsCollection.findOne(query)
 
-        const query = {
-          // scholarshipId: scholarship_id,
-          // userEmail: user_email
-           _id: new ObjectId(applicationId) 
-        };
+        const paidAtValue = existingApp.paidAt || new Date();
 
+        
         const update = {
           $set: {
             paymentStatus: 'paid',
             applicationStatus: 'pending',
             transactionId : transactionId,
-            paidAt: paidAt
+            ...(existingApp.paidAt ? {} : { paidAt: paidAtValue })
           }
         };
 
         const result = await applicationsCollection.updateOne(query, update);
 
-        if (result.matchedCount === 0) {
-          return res.status(404).json({ message: "Application not found" });
-        }
+        // if (result.matchedCount === 0) {
+        //   return res.status(404).json({ message: "Application not found" });
+        // }
 
-        res.json({success : true,modifyApplication: result,tracking_Id : trackingId,transaction_Id: transactionId,scholarshipName: scholarshipName,universityName: universityName,cost: cost,date: paidAt})
+        return res.json({success : true,modifyApplication: result,tracking_Id : trackingId,transaction_Id: transactionId,scholarshipName: scholarshipName,universityName: universityName,cost: cost,
+          date: paidAtValue
+        })
       }
 
       return res.status(400).json({ message: "Payment not completed" });
