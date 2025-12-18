@@ -91,6 +91,7 @@ async function run() {
       const result = await usersCollection.find(query).toArray();
       res.send(result)
     })
+
     // for profile
     app.get('/user',async(req,res) => {
       const query = {};
@@ -129,8 +130,33 @@ async function run() {
     })
 
     app.get('/scholarships',verifyFBToken,async(req,res) => {
-        const query = {}
-        const cursor = scholarshipsCollection.find(query);
+        const searchText = req.query.searchText;
+        // const role = req.query.role;
+        const country = req.query.country;
+        const category = req.query.category;
+
+        const query = {};
+        if(searchText){
+            // single class search
+            // query.displayName = {$regex: searchText, $options: 'i'}
+
+            // multiple class search
+            query.$or = [
+                // searching based on display name
+                {scholarshipName : {$regex: searchText, $options: 'i'}},
+                {universityName : {$regex: searchText, $options: 'i'}},
+                {degree : {$regex: searchText, $options: 'i'}}
+                // searching based on 
+            ]
+        }
+        if(country){
+          query.universityCountry = country;
+        }
+        if (category) {
+          query.category = category;
+        }
+        
+        const cursor = scholarshipsCollection.find(query).sort({createdAt: -1});
         const result = await cursor.toArray();
         res.send(result);
     })
