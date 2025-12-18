@@ -68,6 +68,29 @@ async function run() {
     const applicationsCollection = db.collection('applications');
     const reviewsCollection = db.collection('reviews');
 
+    //???  middle wire with the database access for admin. Must be used after verifyFBToken middlewire  ???///
+    const verifyAdmin = async(req,res,next) => {
+        const email = req.decoded_email;
+        const query = {email};
+        const user = await usersCollection.findOne(query);
+
+        if(!user || user?.role !== 'Admin'){
+            return res.status(403).send({message: 'forbidden access'})
+        }
+        next();
+    }
+
+    const verifyModerator = async(req,res,next) => {
+        const email = req.decoded_email;
+        const query = {email};
+        const user = await usersCollection.findOne(query);
+
+        if(!user || user?.role !== 'Moderator'){
+            return res.status(403).send({message: 'forbidden access'})
+        }
+        next();
+    }
+
     /////// USERS API ///////
     app.post('/users',async(req,res) => {
       const user = req.body;
@@ -92,6 +115,14 @@ async function run() {
       res.send(result)
     })
 
+    // for role setup
+    app.get('/users/:email/role', async(req,res)=> {
+        const email = req.params.email;
+        const query = {email};
+        const user = await usersCollection.findOne(query);
+        res.send({role: user?.role || 'Student'})
+    })
+
     // for profile
     app.get('/user',async(req,res) => {
       const query = {};
@@ -103,18 +134,25 @@ async function run() {
       res.send(result)
     })
 
-    app.patch('/users/:id',async(req,res) => {
+    // app.patch('/users/:id',verifyFBToken,async(req,res) => {
+    app.patch('/users/:id/role',verifyFBToken,verifyAdmin,async(req,res) => {
       const id = req.params.id;
-      const data = req.body;
+      // const data = req.body;
+      const roleInfo = req.body;
       const query = {_id: new ObjectId(id)};
-      const updatedDoc ={
-        $set : data
+      // const updatedDoc ={
+      //   $set : data
+      // }
+      const updatedDoc = {
+          $set: {
+              role : roleInfo.role
+          }
       }
       const result = await usersCollection.updateOne(query,updatedDoc);
       res.send(result)
     })
 
-    app.delete('/users/:id',async(req,res) => {
+    app.delete('/users/:id',verifyFBToken,async(req,res) => {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)};
       const result = await usersCollection.deleteOne(query);
@@ -155,7 +193,7 @@ async function run() {
         if (category) {
           query.category = category;
         }
-        
+
         const cursor = scholarshipsCollection.find(query).sort({createdAt: -1});
         const result = await cursor.toArray();
         res.send(result);
@@ -208,7 +246,7 @@ async function run() {
       res.send(result)
     })
 
-    app.patch('/applications/:id',async(req,res) => {
+    app.patch('/applications/:id',verifyFBToken,verifyModerator,async(req,res) => {
       const id = req.params.id;
       const data = req.body;
       const query = {_id: new ObjectId(id)};
