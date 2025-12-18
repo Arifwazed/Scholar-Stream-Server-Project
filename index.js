@@ -91,6 +91,16 @@ async function run() {
       const result = await usersCollection.find(query).toArray();
       res.send(result)
     })
+    // for profile
+    app.get('/user',async(req,res) => {
+      const query = {};
+      const {email} = req.query;
+      if(email){
+        query.email = email;
+      }
+      const result = await usersCollection.findOne(query);
+      res.send(result)
+    })
 
     app.patch('/users/:id',async(req,res) => {
       const id = req.params.id;
