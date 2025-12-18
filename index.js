@@ -320,6 +320,64 @@ async function run() {
       res.send(result)
     })
 
+    // ======== Analytics API ========
+    app.get('/admin/analytics', verifyFBToken, async (req, res) => {
+      try {
+        // Check admin role
+        // if (req.user.role !== 'admin') {
+        //   return res.status(403).json({ message: 'Forbidden: Admins only' });
+        // }
+
+        // Total Users
+        const totalUsers = await db.collection('users').countDocuments();
+
+        // Total Scholarships
+        const totalScholarships = await db.collection('scholarships').countDocuments();
+
+        // Total Fees Collected (only paid applications)
+        const feesResult = await db.collection('applications').aggregate([
+          { $match: { paymentStatus: 'paid' } },
+          { $group: { _id: null, total: { $sum: "$applicationFees" } } }
+        ]).toArray();
+        const totalFeesCollected = feesResult[0]?.total || 0;
+
+        // Applications by Category (Pie Chart)
+        const applicationsByCategory = await db.collection('applications').aggregate([
+          { $group: { _id: "$scholarshipCategory", count: { $sum: 1 } } },
+          { $project: { _id: 0, category: "$_id", count: 1 } }
+        ]).toArray();
+
+        // Applications by University (Bar Chart)
+        const applicationsByUniversity = await db.collection('applications').aggregate([
+          { $group: { _id: "$universityName", count: { $sum: 1 } } },
+          { $project: { _id: 0, university: "$_id", count: 1 } }
+        ]).toArray();
+
+        // Applications Growth Over Time (Line Chart)
+        const applicationsOverTime = await db.collection('applications').aggregate([
+          { $group: {
+              _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+              count: { $sum: 1 }
+            }
+          },
+          { $sort: { "_id": 1 } },
+          { $project: { _id: 0, date: "$_id", count: 1 } }
+        ]).toArray();
+
+        res.json({
+          totalUsers,
+          totalScholarships,
+          totalFeesCollected,
+          applicationsByCategory,
+          applicationsByUniversity,
+          applicationsOverTime
+        });
+
+      } catch (error) {
+        console.error("Analytics Error:", error);
+        res.status(500).json({ message: "Failed to load analytics" });
+      }
+    });
 
 
     // Send a ping to confirm a successful connection
