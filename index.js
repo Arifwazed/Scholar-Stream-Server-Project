@@ -8,7 +8,9 @@ const port = process.env.PORT || 3000;
 
 //from firebase code //
 const admin = require("firebase-admin");
-const serviceAccount = require('./scholar-stream-projects-firebase-adminsdk.json');
+
+const decoded = Buffer.from(process.env.FB_SERVICE_KEY, 'base64').toString('utf8')
+const serviceAccount = JSON.parse(decoded);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -167,7 +169,7 @@ async function run() {
         res.send(result);
     })
 
-    app.get('/scholarships',verifyFBToken,async(req,res) => {
+    app.get('/scholarships',async(req,res) => {
         const searchText = req.query.searchText;
         // const role = req.query.role;
         const country = req.query.country;
@@ -455,8 +457,8 @@ async function run() {
 
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
@@ -465,7 +467,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Scholar Stream is running')
 })
 
 app.listen(port, () => {

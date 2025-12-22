@@ -1,3 +1,4 @@
 node_modules
 .env
 scholar-stream-projects-firebase-adminsdk.json
+.vercel
