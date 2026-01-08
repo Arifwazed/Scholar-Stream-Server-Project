@@ -161,7 +161,7 @@ async function run() {
       res.send(result)
     })
 
-    /////// scholarships API ///////
+    /////// scholarships API ////////
     app.post('/scholarships',async(req,res) => {
         const scholarship = req.body;
         scholarship.createdAt = new Date();
