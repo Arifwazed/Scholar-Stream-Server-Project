@@ -10,32 +10,31 @@
 
 📌 Project Overview
 
-Money Flow is a modern expense tracking web application that allows users to record, manage, and analyze their income and expenses efficiently.
+Money Flow is a modern expense tracking web application that helps users manage income and expenses efficiently.
+It provides secure authentication, role-based access control, interactive financial insights, and a clean responsive UI.
 
-The application supports secure authentication, role-based access (Admin & User), interactive financial reports, and a clean responsive UI.
-
-This repository contains the frontend (client-side) implementation built with React.
+This repository contains the client-side (frontend) implementation.
 
 🔗 Live URL
 
-Frontend (Firebase Hosting): https://money-flow.web.app
+Frontend: https://money-flow.web.app
 
 Backend API: https://money-flow-server-api.vercel.app
 
 🏗️ System Architecture
 
 Client (React + Vite)
-→ REST API (HTTP)
+→ REST API
 → Server (Node.js + Express)
 → MongoDB Atlas
 
-The client handles UI rendering, authentication state, and user interactions.
-The backend manages business logic, authorization, and database operations.
+The frontend handles UI rendering, authentication state, and user interactions.
+The backend manages authorization, business logic, and database operations.
 
 🛠️ Tech Stack
 Frontend
 
-React (JSX, Hooks, Context API)
+React
 
 Vite
 
@@ -57,44 +56,31 @@ Firebase Hosting
 
 🚀 Core Features
 
-User authentication using Firebase
+User authentication with Firebase
 
-Role-based access control (Admin & User)
+Role-based access (Admin & User)
 
 Add, update, delete income and expense transactions
 
 View transaction history
 
-Admin dashboard with access to all users’ transactions
+Admin access to all users’ transactions
 
-Interactive charts and financial reports
+Interactive charts and reports
 
-Sorting and filtering transactions
-
-Responsive layout for all devices
-
-Public pages: Home, About, Contact
+Responsive UI
 
 🔌 Backend Integration
 
-The frontend communicates with the backend through RESTful APIs.
+The frontend communicates with the backend using REST APIs.
 
-Examples:
+GET /transactions?email=user@email.com
 
-Fetch user-specific transactions using email
+PATCH /transactions/:id
 
-Admin-only routes for all transactions
-
-Secure update and delete operations
-
-Role verification handled by the server
-
-Example API call:
-fetch(/transactions?email=user@email.com)
+DELETE /transactions/:id
 
 📦 Dependencies
-
-Main libraries used in this project:
 
 react
 
@@ -109,19 +95,19 @@ sweetalert2
 tailwindcss
 
 ▶️ Run the Client Locally
-1. Clone the Repository
+Clone the Repository
 
 git clone https://github.com/your-username/money-flow-client.git
 
 cd money-flow-client
 
-2. Install Dependencies
+Install Dependencies
 
 npm install
 
-3. Set Environment Variables
+Environment Variables
 
-Create a .env file in the root directory and add:
+Create a .env file in the root directory:
 
 VITE_apiKey=your_firebase_api_key
 VITE_authDomain=your_firebase_auth_domain
@@ -130,15 +116,11 @@ VITE_storageBucket=your_firebase_storage_bucket
 VITE_messagingSenderId=your_firebase_sender_id
 VITE_appId=your_firebase_app_id
 
-4. Run the Project
+Run the Project
 
 npm run dev
 
 🖼️ Screenshots
-
-Add screenshots in a screenshots folder and reference them like this:
-
-
 
 
 
@@ -149,4 +131,5 @@ Add screenshots in a screenshots folder and reference them like this:
 
 MD Arif Wazed Hossain
 MERN Stack Developer | Frontend Focused
+
 GitHub: https://github.com/arifwazed
