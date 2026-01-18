@@ -97,6 +97,7 @@ The frontend communicates with the backend using **REST APIs**:
 ```bash
 git clone https://github.com/your-username/money-flow-client.git
 cd money-flow-client
-Install Dependencies
-npm install
+
+---
+## Install Dependencies
 
