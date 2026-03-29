@@ -110,9 +110,34 @@ async function run() {
       res.send(result);
     })
 
+    // app.get('/users',async(req,res) => {
+    //   const role = req.query.role;
+    //   const query = role ? { role } : {};
+      
+    //   const result = await usersCollection.find(query).toArray();
+    //   res.send(result)
+    // })
+
     app.get('/users',async(req,res) => {
+      console.log("QUERY:", req.query);
       const role = req.query.role;
-      const query = role ? { role } : {};
+      const searchText = req.query.search;
+      const query = {};
+        if(searchText){
+            // single class search
+            // query.displayName = {$regex: searchText, $options: 'i'}
+
+            // multiple class search
+            query.$or = [
+                // searching based on display name
+                {name : {$regex: searchText, $options: 'i'}},
+                {email : {$regex: searchText, $options: 'i'}},
+                // searching based on 
+            ]
+        }
+        if(role){
+          query.role = role;
+        }
       const result = await usersCollection.find(query).toArray();
       res.send(result)
     })
