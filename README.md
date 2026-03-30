@@ -88,13 +88,18 @@ DELETE /users/:id → Remove user
 
 ### 🔹 Scholarships
 GET /scholarships
+
 POST /scholarships
+
 PATCH /scholarships/:id
+
 DELETE /scholarships/:id
 
 ### 🔹 Applications
 GET /applications
+
 POST /applications
+
 PATCH /applications/:id
 
 ---
