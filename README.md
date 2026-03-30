@@ -80,11 +80,11 @@ It follows a **RESTful API architecture** with role-based access control and opt
 ## 📡 API Endpoints (Sample)
 
 ### 🔹 Users
-GET /users → Get all users (with search & filter)
+  GET /users → Get all users (with search & filter)
 
-PATCH /users/:id/role → Update user role
+  PATCH /users/:id/role → Update user role
 
-DELETE /users/:id → Remove user
+  DELETE /users/:id → Remove user
 
 ### 🔹 Scholarships
 GET /scholarships
