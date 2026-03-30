@@ -81,7 +81,9 @@ It follows a **RESTful API architecture** with role-based access control and opt
 
 ### 🔹 Users
 GET /users → Get all users (with search & filter)
+
 PATCH /users/:id/role → Update user role
+
 DELETE /users/:id → Remove user
 
 ### 🔹 Scholarships
