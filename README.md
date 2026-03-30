@@ -8,12 +8,19 @@
 
 ---
 
-## 📌 Project Overview
+# 🎓 Scholar Stream — Backend Server
 
-**Money Flow** is a modern expense tracking web application that helps users manage income and expenses efficiently.  
-It provides **secure authentication**, **role-based access**, **interactive financial insights**, and a **clean responsive UI**.  
+A scalable and secure backend service for the **Scholar Stream** platform, designed to manage scholarships, users, applications, and reviews.
 
-This repository contains the **client-side (frontend)** implementation.
+🔗 **Live API:** https://your-backend-url.vercel.app  
+
+---
+
+## 🧠 Overview
+
+This backend powers a full-stack scholarship management system where users can explore, apply, and manage scholarships based on their roles (**Student, Moderator, Admin**).
+
+It follows a **RESTful API architecture** with role-based access control and optimized database queries.
 
 ---
 
@@ -23,6 +30,156 @@ This repository contains the **client-side (frontend)** implementation.
 - **Backend API:** [https://money-flow-server-api.vercel.app](https://money-flow-server-api.vercel.app)
 
 ---
+---
+
+## ⚙️ Tech Stack
+
+| Technology | Purpose |
+|-----------|--------|
+| Node.js | Runtime environment |
+| Express.js | Backend framework |
+| MongoDB | Database |
+| Firebase Admin / JWT | Authentication & Authorization |
+| Vercel | Deployment |
+
+---
+
+## 🔐 Key Features
+
+### 👤 User Management
+- Role-based system: **Student / Moderator / Admin**
+- Promote and demote users dynamically
+- Secure user deletion
+
+### 🎓 Scholarship Management
+- Add, update, and delete scholarships
+- Categorization (Full Fund, Partial, Self Fund)
+- Deadline and eligibility tracking
+
+### 📄 Application System
+- Students can apply for scholarships
+- Moderators manage applications
+- Application status updates
+
+### ⭐ Review System
+- Users can submit reviews
+- Moderators can manage and control reviews
+
+### 🔍 Search & Filter
+- Search users by **name or email**
+- Filter users by role
+- Optimized MongoDB queries using `$regex`
+
+### 🛡️ Security
+- Protected API routes
+- Environment-based configuration
+- CORS handling for frontend integration
+
+---
+
+## 📡 API Endpoints (Sample)
+
+### 🔹 Users
+GET /users → Get all users (with search & filter)
+PATCH /users/:id/role → Update user role
+DELETE /users/:id → Remove user
+
+### 🔹 Scholarships
+GET /scholarships
+POST /scholarships
+PATCH /scholarships/:id
+DELETE /scholarships/:id
+
+### 🔹 Applications
+GET /applications
+POST /applications
+PATCH /applications/:id
+
+---
+
+## 🧪 Query Example
+
+```js
+GET /users?search=arif&role=Admin
+✔️ Supports:
+
+Case-insensitive search
+
+Multi-field search (name, email)
+---
+
+## 📁 Project Structure
+backend/
+│
+├── index.js # Main server file
+├── routes/ # API routes (optional)
+├── middleware/ # Auth / role middleware (optional)
+├── vercel.json # Vercel configuration
+├── package.json
+└── .env # Environment variables
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env` file in the root:
+
+```env
+PORT=3000
+MONGODB_URI=your_mongodb_connection_string
+⚠️ Never expose .env in public repositories
+---
+
+## ▶️ Run Locally
+
+```bash
+npm install
+npm run dev
+🌐 Deployment
+
+This backend is deployed using Vercel (Serverless Functions).
+
+Deploy manually:
+vercel --prod
+🔗 Frontend Integration
+
+Make sure your frontend uses:
+baseURL: "https://your-backend-url.vercel.app"
+🔒 CORS Configuration
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://your-frontend.web.app"
+  ],
+  credentials: true
+}));
+---
+
+## 👨‍💻 Author
+
+**Arif Wazed Hossain**  
+🔗 GitHub: https://github.com/your-username  
+
+---
+
+## 📌 Highlights
+
+✔️ Production-ready backend  
+✔️ Clean REST API design  
+✔️ Role-based authorization system  
+✔️ Real-world project structure  
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub — it helps a lot!
+
+
+
+
+
+
 
 ## 🏗️ System Architecture
 
