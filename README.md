@@ -99,7 +99,6 @@ PATCH /applications/:id
 
 ## 🧪 Query Example
 
-```js
 GET /users?search=arif&role=Admin
 ✔️ Supports:
 
@@ -122,9 +121,9 @@ backend/
 
 ## 🔑 Environment Variables
 
-Create a `.env` file in the root:
+Create a '.env' file in the root:
 
-```env
+--- env
 PORT=3000
 MONGODB_URI=your_mongodb_connection_string
 ⚠️ Never expose .env in public repositories
