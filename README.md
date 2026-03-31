@@ -80,77 +80,91 @@ It follows a **RESTful API architecture** with role-based access control and opt
 ## 📡 API Endpoints (Sample)
 
 ### 🔹 Users
-  GET /users → Get all users (with search & filter)
+GET /users → Get all users (with search & filter)
 
-  PATCH /users/:id/role → Update user role
+PATCH /users/:id/role → Update user role
 
-  DELETE /users/:id → Remove user
+DELETE /users/:id → Remove user
 
 ### 🔹 Scholarships
-GET /scholarships
+GET /scholarships → Get all scholarships
 
-POST /scholarships
+POST /scholarships → Add scholarships
 
-PATCH /scholarships/:id
+PATCH /scholarships/:id → Update scholarships
 
-DELETE /scholarships/:id
+DELETE /scholarships/:id → Remove scholarships
 
 ### 🔹 Applications
-GET /applications
+GET /applications  → Get all applications
 
-POST /applications
+POST /applications → Add applications
 
-PATCH /applications/:id
+PATCH /applications/:id → Update applications
 
 ---
 
 ## 🧪 Query Example
 
+```
 GET /users?search=arif&role=Admin
+```
+
 ✔️ Supports:
-
-Case-insensitive search
-
-Multi-field search (name, email)
+- Case-insensitive search  
+- Multi-field search (name, email)
 ---
 
 ## 📁 Project Structure
+
+```
 backend/
 │
-├── index.js # Main server file
-├── routes/ # API routes (optional)
-├── middleware/ # Auth / role middleware (optional)
-├── vercel.json # Vercel configuration
+├── index.js            # Main server file
+├── routes/             # API routes (optional)
+├── middleware/         # Auth/role middleware (optional)
+├── vercel.json         # Vercel configuration
 ├── package.json
-└── .env # Environment variables
-
+└── .env                # Environment variables
+```
 ---
 
 ## 🔑 Environment Variables
 
 Create a '.env' file in the root:
 
---- env
+```
 PORT=3000
 MONGODB_URI=your_mongodb_connection_string
+```
 ⚠️ Never expose .env in public repositories
+
 ---
 
 ## ▶️ Run Locally
 
-```bash
+```
 npm install
 npm run dev
+```
+
 🌐 Deployment
 
 This backend is deployed using Vercel (Serverless Functions).
-
 Deploy manually:
+
+```
 vercel --prod
+```
+
 🔗 Frontend Integration
 
 Make sure your frontend uses:
+
+```
 baseURL: "https://your-backend-url.vercel.app"
+```
+
 🔒 CORS Configuration
 app.use(cors({
   origin: [
