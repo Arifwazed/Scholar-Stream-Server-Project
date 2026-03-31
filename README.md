@@ -66,7 +66,7 @@ It follows a **RESTful API architecture** with role-based access control and opt
 ### 🔍 Search & Filter
 - Search users by **name or email**
 - Filter users by role
-- Optimized MongoDB queries using `$regex`
+- Optimized MongoDB queries using `$regex.`
 
 ### 🛡️ Security
 - Protected API routes
@@ -146,7 +146,7 @@ npm install
 npm run dev
 ```
 
-🌐 Deployment
+## 🌐 Deployment
 
 This backend is deployed using Vercel (Serverless Functions).
 Deploy manually:
@@ -155,7 +155,7 @@ Deploy manually:
 vercel --prod
 ```
 
-🔗 Frontend Integration
+## 🔗 Frontend Integration
 
 Make sure your frontend uses:
 
@@ -163,7 +163,8 @@ Make sure your frontend uses:
 baseURL: "https://your-backend-url.vercel.app"
 ```
 
-🔒 CORS Configuration
+## 🔒 CORS Configuration
+```
 app.use(cors({
   origin: [
     "http://localhost:5173",
@@ -171,6 +172,7 @@ app.use(cors({
   ],
   credentials: true
 }));
+```
 ---
 
 ## 👨‍💻 Author
