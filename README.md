@@ -78,27 +78,27 @@ It follows a **RESTful API architecture** with role-based access control and opt
 ## 📡 API Endpoints (Sample)
 
 ### 🔹 Users
-GET /users → Get all users (with search & filter)
+`GET /users` → Get all users (with search & filter)
 
-PATCH /users/:id/role → Update user role
+`PATCH /users/:id/role` → Update user role
 
-DELETE /users/:id → Remove user
+`DELETE /users/:id` → Remove user
 
 ### 🔹 Scholarships
-GET /scholarships → Get all scholarships
+`GET /scholarships` → Get all scholarships
 
-POST /scholarships → Add scholarships
+`POST /scholarships` → Add scholarships
 
-PATCH /scholarships/:id → Update scholarships
+`PATCH /scholarships/:id` → Update scholarships
 
-DELETE /scholarships/:id → Remove scholarships
+`DELETE /scholarships/:id` → Remove scholarships
 
 ### 🔹 Applications
-GET /applications  → Get all applications
+`GET /applications`  → Get all applications
 
-POST /applications → Add applications
+`POST /applications` → Add applications
 
-PATCH /applications/:id → Update applications
+`PATCH /applications/:id`→ Update applications
 
 ---
 
@@ -140,7 +140,12 @@ MONGODB_URI=your_mongodb_connection_string
 ---
 
 ## ▶️ Run Locally
-
+### Clone the Repository
+```
+git clone https://github.com/your-username/money-flow-client.git
+cd money-flow-client
+```
+### Start the Server
 ```
 npm install
 npm run dev
@@ -194,83 +199,3 @@ app.use(cors({
 ## ⭐ Support
 
 If you like this project, consider giving it a ⭐ on GitHub — it helps a lot!
-
-
-
-
-
-
-
-## 🏗️ System Architecture
-
-Client (React + Vite)
-↓
-REST API
-↓
-Server (Node.js + Express)
-↓
-MongoDB Atlas
-
-The frontend handles **UI rendering**, **authentication state**, and **user interactions**.  
-The backend manages **authorization**, **business logic**, and **database operations**.
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-- React
-- Vite
-- Tailwind CSS
-- React Router DOM
-- Recharts
-- SweetAlert2
-
-### Authentication
-- Firebase Authentication
-
-### Deployment
-- Firebase Hosting
-
----
-
-## 🚀 Core Features
-
-- User authentication with Firebase  
-- Role-based access (**Admin** & **User**)  
-- Add, update, delete income and expense transactions  
-- View transaction history  
-- Admin access to all users’ transactions  
-- Interactive charts and reports  
-- Responsive UI  
-
----
-
-## 🔌 Backend Integration
-
-The frontend communicates with the backend using **REST APIs**:
-
-- `GET /transactions?email=user@email.com` — Get user transactions  
-- `PATCH /transactions/:id` — Update transaction  
-- `DELETE /transactions/:id` — Delete transaction  
-
----
-
-## 📦 Dependencies
-
-- react  
-- react-router-dom  
-- firebase  
-- recharts  
-- sweetalert2  
-- tailwindcss  
-
----
-
-## ▶️ Run the Client Locally
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/your-username/money-flow-client.git
-cd money-flow-client
