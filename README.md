@@ -178,7 +178,7 @@ app.use(cors({
 ## 👨‍💻 Author
 
 **Arif Wazed Hossain**  
-🔗 GitHub: https://github.com/your-username  
+🔗 GitHub: [https://github.com/Arifwazed](https://github.com/Arifwazed)  
 
 ---
 
