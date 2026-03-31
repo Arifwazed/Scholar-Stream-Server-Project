@@ -11,7 +11,7 @@
 
 A scalable and secure backend service for the **Scholar Stream** platform, designed to manage scholarships, users, applications, and reviews.
 
-🔗 **Live API:** https://your-backend-url.vercel.app  
+🔗 **Live API:** [https://scholar-stream-server-theta.vercel.app](https://scholar-stream-server-theta.vercel.app/)  
 
 ---
 
