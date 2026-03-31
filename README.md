@@ -25,8 +25,8 @@ It follows a **RESTful API architecture** with role-based access control and opt
 
 ## 🔗 Live URL
 
-- **Frontend:** [https://money-flow.web.app](https://money-flow.web.app)  
-- **Backend API:** [https://money-flow-server-api.vercel.app](https://money-flow-server-api.vercel.app)
+- **Frontend:** [https://scholar-stream-projects.web.app](https://scholar-stream-projects.web.app/) 
+- **Backend API:** [https://scholar-stream-server-theta.vercel.app](https://scholar-stream-server-theta.vercel.app/)
 
 ---
 
