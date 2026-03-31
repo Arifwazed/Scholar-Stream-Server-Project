@@ -1,4 +1,4 @@
-# 💰 Money Flow — Expense Tracker (Client)
+# 🎓 Scholar Stream — Backend Server
 
 ![React](https://img.shields.io/badge/React-18-blue)
 ![Vite](https://img.shields.io/badge/Vite-fast-purple)
@@ -8,7 +8,6 @@
 
 ---
 
-# 🎓 Scholar Stream — Backend Server
 
 A scalable and secure backend service for the **Scholar Stream** platform, designed to manage scholarships, users, applications, and reviews.
 
@@ -29,7 +28,6 @@ It follows a **RESTful API architecture** with role-based access control and opt
 - **Frontend:** [https://money-flow.web.app](https://money-flow.web.app)  
 - **Backend API:** [https://money-flow-server-api.vercel.app](https://money-flow-server-api.vercel.app)
 
----
 ---
 
 ## ⚙️ Tech Stack
